@@ -1,0 +1,14 @@
+---
+install_nvidia: true
+install_rocm: false
+enable_wsl2: false
+
+python_versions:
+  - "3.11.9"
+  - "3.12.4"
+
+node_version: "20"
+docker_users:
+  - "{{ ansible_user }}"
+
+cpp_compiler: gcc-12

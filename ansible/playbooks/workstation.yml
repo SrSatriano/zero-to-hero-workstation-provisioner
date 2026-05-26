@@ -1,0 +1,25 @@
+---
+- name: Provision Zero-to-Hero workstation
+  hosts: local
+  become: true
+  vars_files:
+    - ../../group_vars/all.yml
+
+  roles:
+    - role: common
+      tags: [common]
+    - role: nvidia
+      when: install_nvidia | bool
+      tags: [nvidia]
+    - role: docker
+      tags: [docker]
+    - role: cpp
+      tags: [cpp]
+    - role: python
+      tags: [python]
+    - role: node
+      tags: [node]
+    - role: network
+      tags: [network]
+    - role: devtools
+      tags: [devtools]

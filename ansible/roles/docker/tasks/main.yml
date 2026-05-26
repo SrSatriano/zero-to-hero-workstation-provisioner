@@ -1,0 +1,16 @@
+---
+- name: Instalar Docker (Debian)
+  apt:
+    name:
+      - docker-ce
+      - docker-compose-plugin
+    state: present
+  when: ansible_os_family == "Debian"
+  ignore_errors: true  # requer repo docker oficial — ver docs
+
+- name: Adicionar usuário ao grupo docker
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  loop: "{{ docker_users }}"
