@@ -1,77 +1,113 @@
-# Zero-to-Hero Workstation Provisioner
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="version" />
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="license" />
-  <img src="https://img.shields.io/badge/status-production--ready-brightgreen" alt="status" />
-  <img src="https://img.shields.io/badge/CI-passing-success" alt="ci" />
+# Provisionador de estação de trabalho zero-to-hero
+
+**Provisionador de estação de trabalho zero-to-hero**
+
+<p>
+  <a href="https://github.com/SrSatriano/zero-to-hero-workstation-provisioner"><img src="https://img.shields.io/badge/GitHub-zero-to-hero-workstation-provisioner-24292e?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
 
-> **IaC Ansible para estação dev completa em Linux/WSL2.**
+<p>
+  <img src="https://img.shields.io/badge/versão-1.0.0-0ea5e9?style=flat-square" alt="versão" />
+  <img src="https://img.shields.io/badge/licença-MIT-22c55e?style=flat-square" alt="licença" />
+  <img src="https://img.shields.io/badge/idioma-pt--BR-blue?style=flat-square" alt="idioma" />
+  <img src="https://img.shields.io/badge/CI-GitHub_Actions-8b5cf6?style=flat-square" alt="ci" />
+</p>
 
-Desenvolvido e mantido por [@SrSatriano](https://github.com/SrSatriano). Repositório: [zero-to-hero-workstation-provisioner](https://github.com/SrSatriano/zero-to-hero-workstation-provisioner).
+<p><strong>IaC Ansible para estação de desenvolvimento completa em Linux/WSL2.</strong></p>
+
+<p>
+  Autor: <a href="https://github.com/SrSatriano">@SrSatriano</a> ·
+  Release <strong>1.0.0</strong> (2026-03-26)
+</p>
+
+</div>
 
 ---
 
 ## Índice
 
-- [Visão geral](#visão-geral)
-- [Funcionalidades](#funcionalidades)
-- [Stack](#stack)
-- [Arquitetura](#arquitetura)
-- [Início rápido](#início-rápido)
-- [Configuração](#configuração)
-- [Testes](#testes)
-- [Performance](#performance)
-- [Deploy](#deploy)
-- [Documentação](#documentação)
-- [Segurança](#segurança)
-- [Changelog](#changelog)
-- [Licença](#licença)
+1. [Visão geral](#visão-geral)
+2. [Problema e solução](#problema-e-solução)
+3. [Para quem é](#para-quem-é)
+4. [Casos de uso](#casos-de-uso)
+5. [Funcionalidades](#funcionalidades)
+6. [Stack tecnológica](#stack-tecnológica)
+7. [Arquitetura](#arquitetura)
+8. [Estrutura do repositório](#estrutura-do-repositório)
+9. [Pré-requisitos](#pré-requisitos)
+10. [Instalação e execução](#instalação-e-execução)
+11. [Configuração](#configuração)
+12. [Testes](#testes)
+13. [Performance](#performance)
+14. [Deploy e operação](#deploy-e-operação)
+15. [Limitações conhecidas](#limitações-conhecidas)
+16. [Roadmap](#roadmap)
+17. [Documentação complementar](#documentação-complementar)
+18. [Segurança e licença](#segurança-e-licença)
 
 ---
 
 ## Visão geral
 
-Este projeto entrega uma solução **completa e pronta para produção** (1.0.0) para o domínio descrito no título. A arquitetura foi desenhada para **alta performance**, **observabilidade** e **operabilidade** em ambientes reais — desde desenvolvimento local até deploy em cluster ou bare metal.
+Este repositório faz parte do **portfólio de engenharia** mantido por [@SrSatriano](https://github.com/SrSatriano). A versão **1.0.0** entrega implementação do núcleo do produto, testes automatizados, pipeline de integração contínua e documentação operacional em **português brasileiro**.
 
-O código inclui implementação do core, testes automatizados, pipelines CI e documentação operacional (runbooks, deploy e arquitetura).
+O objetivo é permitir que você clone, execute e evolua o projeto com clareza — do desenvolvimento local ao deploy em produção.
+
+## Problema e solução
+
+| | |
+|---|---|
+| **Problema** | Configurar máquina nova para HFT/ML leva dias manuais. |
+| **Solução** | Playbook idempotente com roles NVIDIA, Docker, C++, Python e Node. |
+
+## Para quem é
+
+Desenvolvedores que formatam PCs com frequência.
+
+## Casos de uso
+
+- WSL2 dev box
+- Servidor de backtest
 
 ## Funcionalidades
 
-- [x] Roles: NVIDIA, Docker, C++, Python, Node
+- [x] Roles modulares
 - [x] group_vars customizável
+- [x] Compatibilidade WSL2
+- [x] Lista de pacotes
 - [x] Playbook idempotente
-- [x] Compatibilidade WSL2 documentada
-- [x] Lista completa de pacotes
 
-## Stack
+## Stack tecnológica
 
-**Ansible, Bash, Terraform (opcional)**
+| Camada | Tecnologias |
+|--------|-------------|
+| **Principal** | Ansible, Bash |
 
 ## Arquitetura
 
 ```mermaid
 flowchart TB
-  subgraph Clients
-    U[Operators / APIs]
-  end
-  subgraph Core
-    S[Service Layer]
-    E[Execution Engine]
-  end
-  subgraph Data
-    D[(Storage)]
-    M[Metrics]
-  end
-  U --> S --> E
-  E --> D
-  S --> M
+  INV[Inventário] --> PB[Playbook Ansible]
+  PB --> R1[Drivers / Docker]
+  PB --> R2[Toolchains dev]
 ```
 
-Diagrama detalhado, decisões de design e escalabilidade: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Detalhamento de componentes, fluxos de dados e decisões de design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Início rápido
+## Estrutura do repositório
+
+| Caminho | Descrição |
+|---------|-----------|
+| `ansible/playbooks/` | Playbooks |
+| `ansible/roles/` | Roles |
+
+## Pré-requisitos
+
+Ansible 2.15+, Ubuntu 22.04 ou WSL2.
+
+## Instalação e execução
 
 ```bash
 git clone https://github.com/SrSatriano/zero-to-hero-workstation-provisioner.git
@@ -84,59 +120,59 @@ ansible-playbook -i inventory/local.ini ansible/playbooks/workstation.yml
 
 ## Configuração
 
-| Variável / Arquivo | Descrição |
-|------------------|-----------|
-| `.env` / `config/` | Credenciais e endpoints (nunca commitar segredos) |
-| Documentação em `docs/` | Parâmetros avançados e tuning |
+_Este projeto não exige variáveis obrigatórias além das credenciais locais em `.env`._
 
-Copie exemplos: `cp .env.example .env` ou `cp config/example.env .env` quando disponível.
+> **Importante:** nunca faça commit de arquivos `.env` com segredos reais. Use `.env.example` como referência.
 
 ## Testes
 
+Execute a suíte de testes antes de abrir pull requests:
+
 ```bash
-# Consulte o stack — exemplos:
-# Python: pytest
-# Node: npm test
-# Go: go test ./...
-# Rust: cargo test
-# Hardhat: npx hardhat test
-# C++: ctest ou ./build/*_test
+ansible-playbook --syntax-check ansible/playbooks/workstation.yml
 ```
 
-A pipeline CI (`.github/workflows/ci.yml`) executa build e testes em cada push para `main`.
+A pipeline [`.github/workflows/ci.yml`](.github/workflows/ci.yml) repete build e testes em cada push para `main`.
 
 ## Performance
 
-| Provisionamento | ~25 min |
+| Provisionamento completo | ~25 min |
 
-Metodologia completa e reprodução: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) e README de benchmarks quando aplicável.
+Metodologia, hardware de referência e flags de compilação: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Deploy
+## Deploy e operação
 
-Guia passo a passo: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)  
-Runbook de operação: [docs/OPERATIONS.md](docs/OPERATIONS.md)
+| Guia | Conteúdo |
+|------|----------|
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Homologação, produção e rollback |
+| [docs/OPERATIONS.md](docs/OPERATIONS.md) | Monitoramento, alertas e incidentes |
 
-## Documentação
+## Limitações conhecidas
 
-| Documento | Conteúdo |
-|-----------|----------|
-| [ARCHITECTURE](docs/ARCHITECTURE.md) | Guia técnico |
-| [DEPLOYMENT](docs/DEPLOYMENT.md) | Guia técnico |
-| [OPERATIONS](docs/OPERATIONS.md) | Guia técnico |
+- Drivers NVIDIA variam por hardware
+
+## Roadmap
+
+- Role para Rust e Foundry
+
+## Documentação complementar
+
+| Documento | Descrição |
+|-----------|-----------|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura e decisões técnicas |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deploy passo a passo |
+| [docs/OPERATIONS.md](docs/OPERATIONS.md) | Runbook operacional |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Como contribuir |
 | [CHANGELOG.md](CHANGELOG.md) | Histórico de versões |
 | [SECURITY.md](SECURITY.md) | Política de segurança |
+| [AUTHORS.md](AUTHORS.md) | Créditos |
 
-## Segurança
+## Segurança e licença
 
-- Dependências revisadas na release 1.0.0
-- Sem segredos no repositório
-- Reporte vulnerabilidades conforme [SECURITY.md](SECURITY.md)
+- Dependências revisadas na release **1.0.0**
+- Vulnerabilidades: siga [SECURITY.md](SECURITY.md)
+- Licença: [MIT](LICENSE) © SrSatriano 2026
 
-## Changelog
+---
 
-Ver [CHANGELOG.md](CHANGELOG.md) — release **1.0.0** (2026-03-26) com feature set completo.
-
-## Licença
-
-[MIT](LICENSE) © SrSatriano 2026
+<p align="center">Desenvolvido com foco em clareza e engenharia de produção · <a href="https://github.com/SrSatriano/zero-to-hero-workstation-provisioner">Ver no GitHub</a></p>
